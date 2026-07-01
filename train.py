@@ -1,4 +1,5 @@
 from agent import PolicyNetwork
+import matplotlib.pyplot as plt
 import gymnasium
 import torch
 
@@ -8,6 +9,7 @@ policy = PolicyNetwork()
 
 optimizer = torch.optim.Adam(policy.parameters(), lr=0.001)
 
+all_rewards = []
 
 for episode in range(500):
     observation, info = env.reset()
@@ -46,5 +48,14 @@ for episode in range(500):
     optimizer.step()
 
     print(f"Episode {episode}, Total Reward: {sum(rewards)}")
+    
+    all_rewards.append(sum(rewards))
 
-   
+
+
+plt.plot(all_rewards)
+plt.xlabel("Episode")
+plt.ylabel("Total Reward")
+plt.title("CartPole Learning Curve")
+plt.savefig("learning_curve.png")
+plt.show()
